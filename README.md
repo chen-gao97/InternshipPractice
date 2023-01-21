@@ -34,6 +34,7 @@ Then run the following:
 cd AndreyevInterview
 
 # Run the database migrations
+dotnet ef migrations add MyFirstMigration
 dotnet ef database update
 ```
 
