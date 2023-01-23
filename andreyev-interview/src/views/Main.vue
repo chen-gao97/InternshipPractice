@@ -61,28 +61,28 @@ export default defineComponent({
       }).then((response) => {
         response.json().then(invoices => (state.invoices = invoices.invoices))
       });
-      fetch("http://localhost:5000/contacts", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        },
+      // fetch("http://localhost:5000/contacts", {
+      //   method: "GET",
+      //   headers: {
+      //     "Content-Type": "application/json"
+      //   },
 
-      }).then((response) => {
-        response.json().then(contacts => (state.contacts = contacts.contacts))
-      })
+      // }).then((response) => {
+      //   response.json().then(contacts => (state.contacts = contacts.contacts))
+      // })
     }
 
-    function createContact() {
-      fetch("http://localhost:5000/Contacts", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          description: state.legalRep
-        })
-      }).then(fetchData)
-    }
+    // function createContact() {
+    //   fetch("http://localhost:5000/Contacts", {
+    //     method: "PUT",
+    //     headers: {
+    //       "Content-Type": "application/json"
+    //     },
+    //     body: JSON.stringify({
+    //       description: state.legalRep
+    //     })
+    //   }).then(fetchData)
+    // }
     function createInvoice() {
       fetch("http://localhost:5000/invoices", {
         method: "PUT",
