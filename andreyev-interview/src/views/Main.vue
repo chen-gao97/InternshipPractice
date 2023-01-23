@@ -1,6 +1,11 @@
 <template>
   <div class="home">
     <form @submit.prevent>
+      <!-- <label for="contacts">Create a new contact</label> -->
+      <!-- <input type="text" name="contacts" v-model="state.legalRep" placeholder="Legal Representor" /> -->
+      <button @click="createContact">Create Contact</button>
+    </form>
+    <form @submit.prevent>
       <label for="invoices">Create a new invoice</label>
       <input type="text" name="invoices" v-model="state.description" placeholder="Description" />
       <button @click="createInvoice">Create Invoice</button>
@@ -8,7 +13,7 @@
 
     <hr />
 
-     <table>
+    <table>
       <thead>
         <th>ID</th>
         <th>Description</th>
@@ -18,16 +23,16 @@
       </thead>
       <tbody>
         <tr v-for="invoice in state.invoices" :key="invoice.id">
-          <td>{{invoice.id}}</td>
-          <td>{{invoice.description}}</td>
+          <td>{{ invoice.id }}</td>
+          <td>{{ invoice.description }}</td>
           <td>
-            <router-link :to="{ name: 'Invoice', params: { id: invoice.id }}">
+            <router-link :to="{ name: 'Invoice', params: { id: invoice.id } }">
               Open
             </router-link>
           </td>
-           <td>{{invoice.totalValue}}</td>
-          <td>{{invoice.totalBillableValue}}</td>
-          
+          <td>{{ invoice.totalValue }}</td>
+          <td>{{ invoice.totalBillableValue }}</td>
+
         </tr>
       </tbody>
     </table>
@@ -46,17 +51,38 @@ export default defineComponent({
       description: ""
     })
 
-    function fetchInvoices() {
+    function fetchData() {
       fetch("http://localhost:5000/invoices", {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
         },
+
       }).then((response) => {
         response.json().then(invoices => (state.invoices = invoices.invoices))
+      });
+      fetch("http://localhost:5000/contacts", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+      }).then((response) => {
+        response.json().then(contacts => (state.contacts = contacts.contacts))
       })
     }
 
+    function createContact() {
+      fetch("http://localhost:5000/Contacts", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          description: state.legalRep
+        })
+      }).then(fetchData)
+    }
     function createInvoice() {
       fetch("http://localhost:5000/invoices", {
         method: "PUT",
@@ -66,12 +92,12 @@ export default defineComponent({
         body: JSON.stringify({
           description: state.description
         })
-      }).then(fetchInvoices)
+      }).then(fetchData)
     }
 
-    onMounted(fetchInvoices)
+    onMounted(fetchData)
 
-    return {state, createInvoice}
+    return { state, createInvoice }
   }
 });
 </script>
